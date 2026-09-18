@@ -1,0 +1,434 @@
+<title>イチトビ観測記録</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;500;700&family=IBM+Plex+Mono:wght@400;600&display=swap">
+<style>
+:root{
+  color-scheme: light;
+  --plane:#eef3f5; --surface:#fbfcfd; --surface-2:#f4f8f9;
+  --ink:#0d1519; --ink-2:#4b565c; --muted:#7d8b92;
+  --grid:#dde5e9; --rule:#c6d1d6; --hair:rgba(13,21,25,.10);
+  --s1:#2a78d6; --s2:#eb6834; --s1-soft:rgba(42,120,214,.13); --s2-soft:rgba(235,104,52,.14);
+  --warn:#b06a12;
+  --shadow:0 1px 2px rgba(13,21,25,.05), 0 8px 24px -18px rgba(13,21,25,.35);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme: dark;
+    --plane:#080c0e; --surface:#141a1d; --surface-2:#1a2226;
+    --ink:#ffffff; --ink-2:#b8c3c8; --muted:#7d8b92;
+    --grid:#222a2e; --rule:#333d42; --hair:rgba(255,255,255,.10);
+    --s1:#3987e5; --s2:#d95926; --s1-soft:rgba(57,135,229,.18); --s2-soft:rgba(217,89,38,.18);
+    --warn:#e0a13c;
+    --shadow:0 1px 2px rgba(0,0,0,.4), 0 8px 24px -18px rgba(0,0,0,.8);
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme: dark;
+  --plane:#080c0e; --surface:#141a1d; --surface-2:#1a2226;
+  --ink:#ffffff; --ink-2:#b8c3c8; --muted:#7d8b92;
+  --grid:#222a2e; --rule:#333d42; --hair:rgba(255,255,255,.10);
+  --s1:#3987e5; --s2:#d95926; --s1-soft:rgba(57,135,229,.18); --s2-soft:rgba(217,89,38,.18);
+  --warn:#e0a13c;
+  --shadow:0 1px 2px rgba(0,0,0,.4), 0 8px 24px -18px rgba(0,0,0,.8);
+}
+
+*{box-sizing:border-box}
+body{
+  margin:0; background:var(--plane); color:var(--ink);
+  font-family:"Zen Kaku Gothic New", system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-size:15px; line-height:1.75; -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:940px; margin:0 auto; padding:0 20px 96px}
+.num{font-family:"IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace; font-variant-numeric:tabular-nums}
+
+/* ---- header ---- */
+header{padding:56px 0 32px; border-bottom:1px solid var(--rule)}
+.eyebrow{
+  font-size:11px; letter-spacing:.16em; text-transform:uppercase; color:var(--muted);
+  font-family:"IBM Plex Mono", monospace; margin:0 0 14px;
+}
+h1{
+  font-size:clamp(30px,6vw,44px); line-height:1.2; font-weight:700; margin:0 0 14px;
+  text-wrap:balance; letter-spacing:.01em;
+}
+.lede{max-width:60ch; color:var(--ink-2); margin:0 0 22px}
+.meta{display:flex; flex-wrap:wrap; gap:8px 22px; font-size:12.5px; color:var(--muted)}
+.meta b{color:var(--ink-2); font-weight:500}
+
+/* ---- sections ---- */
+section{padding-top:52px}
+.sec-head{display:flex; align-items:baseline; gap:14px; margin-bottom:6px; flex-wrap:wrap}
+h2{font-size:21px; font-weight:700; margin:0; letter-spacing:.01em}
+.tag{
+  font-family:"IBM Plex Mono", monospace; font-size:10.5px; letter-spacing:.1em;
+  text-transform:uppercase; padding:3px 8px; border-radius:3px; white-space:nowrap;
+}
+.tag.live{background:var(--s1-soft); color:var(--s1)}
+.tag.bt{background:var(--surface-2); color:var(--muted); border:1px solid var(--hair)}
+.sub{color:var(--ink-2); max-width:64ch; margin:0 0 26px; font-size:14px}
+
+/* ---- callout ---- */
+.note{
+  background:var(--surface); border:1px solid var(--hair); border-left:3px solid var(--warn);
+  padding:14px 18px; border-radius:4px; font-size:13.5px; color:var(--ink-2); margin:0 0 26px;
+}
+.note strong{color:var(--ink); font-weight:700}
+
+/* ---- tiles ---- */
+.tiles{display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin-bottom:26px}
+@media (max-width:620px){.tiles{grid-template-columns:repeat(2,1fr)}}
+.tile{
+  background:var(--surface); border:1px solid var(--hair); border-radius:6px;
+  padding:16px 18px 15px; box-shadow:var(--shadow);
+}
+.tile .k{font-size:11.5px; color:var(--muted); letter-spacing:.04em; margin-bottom:7px}
+.tile .v{font-size:29px; line-height:1.05; font-weight:600; letter-spacing:-.01em}
+.tile .v small{font-size:15px; font-weight:400; color:var(--ink-2); margin-left:3px}
+.tile .f{font-size:11.5px; color:var(--muted); margin-top:7px}
+.tile.hl{border-color:var(--s1); background:linear-gradient(0deg,var(--s1-soft),var(--s1-soft)),var(--surface)}
+.tile.hl .v{color:var(--s1)}
+
+/* ---- chart card ---- */
+.card{
+  background:var(--surface); border:1px solid var(--hair); border-radius:6px;
+  padding:22px 22px 16px; box-shadow:var(--shadow); margin-bottom:26px;
+}
+.card h3{font-size:15px; font-weight:700; margin:0 0 4px}
+.card .cap{font-size:12.5px; color:var(--muted); margin:0 0 18px; max-width:62ch}
+.legend{display:flex; gap:18px; flex-wrap:wrap; font-size:12px; color:var(--ink-2); margin-bottom:14px}
+.legend i{display:inline-block; width:11px; height:11px; border-radius:2px; margin-right:6px; vertical-align:-1px}
+.plot{position:relative; overflow-x:auto}
+svg{display:block; max-width:100%}
+.tt{
+  position:absolute; pointer-events:none; opacity:0; transition:opacity .1s;
+  background:var(--ink); color:var(--plane); font-size:11.5px; line-height:1.55;
+  padding:7px 10px; border-radius:4px; white-space:nowrap; z-index:5; transform:translate(-50%,-115%);
+}
+.tt b{font-weight:600}
+
+/* ---- table ---- */
+.tblwrap{overflow-x:auto; border:1px solid var(--hair); border-radius:6px; background:var(--surface); box-shadow:var(--shadow)}
+table{border-collapse:collapse; width:100%; font-size:13px; min-width:520px}
+th,td{padding:9px 14px; text-align:right; border-bottom:1px solid var(--grid); white-space:nowrap}
+th{
+  font-size:11px; color:var(--muted); font-weight:500; letter-spacing:.05em;
+  text-align:right; background:var(--surface-2); position:sticky; top:0;
+}
+th:first-child,td:first-child{text-align:left}
+tbody tr:last-child td{border-bottom:none}
+tbody tr:hover{background:var(--surface-2)}
+.bar{min-width:150px}
+.brow{display:flex; align-items:center; gap:11px; justify-content:flex-end}
+.trk{flex:0 0 92px; height:7px; border-radius:4px; background:var(--grid); overflow:hidden}
+.trk i{display:block; height:100%; background:var(--s1); border-radius:4px}
+.brow b{font-weight:400; font-size:12.5px; min-width:32px; text-align:right; color:var(--ink)}
+.dim{color:var(--muted)}
+
+/* ---- method ---- */
+.cols{display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:26px}
+.cols h4{font-size:13px; margin:0 0 8px; font-weight:700}
+.cols ul{margin:0; padding-left:1.1em; color:var(--ink-2); font-size:13.5px}
+.cols li{margin-bottom:5px}
+
+footer{
+  margin-top:56px; padding-top:22px; border-top:1px solid var(--rule);
+  font-size:12px; color:var(--muted); line-height:1.85;
+}
+footer a{color:var(--s1)}
+:focus-visible{outline:2px solid var(--s1); outline-offset:2px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+<div class="wrap">
+
+<header>
+  <p class="eyebrow">Ichitobi — Boat Race Observation Log</p>
+  <h1>イチトビ観測記録</h1>
+  <p class="lede">1号艇が「勝てない」レースだけを毎日探している観測機の、成績を全部置いておく場所です。当たった日も外れた日も、同じ表に出します。</p>
+  <div class="meta">
+    <span>最終更新 <b class="num" id="updated">—</b></span>
+    <span>実測 <b class="num" id="m-live">—</b></span>
+    <span>検証 <b class="num" id="m-bt">—</b></span>
+    <span>X <b>@ichitobi_boat</b></span>
+  </div>
+</header>
+
+<!-- 1. 実測 -->
+<section>
+  <div class="sec-head"><h2>実測</h2><span class="tag live">毎日更新</span></div>
+  <p class="sub">2026年8月30日から、朝に予測を出して夜に答え合わせした結果です。ここに載る数字は後から書き換えません。</p>
+
+  <div class="note" id="live-warn"></div>
+
+  <div class="tiles" id="live-tiles"></div>
+
+  <div class="tblwrap" style="margin-bottom:26px">
+    <table>
+      <thead><tr>
+        <th>日付</th><th>検出R</th><th>うち1号艇が負け</th><th>検出ゾーン負け率</th>
+        <th>TOP5</th><th>検証 単勝</th><th>検証 3連単BOX</th>
+      </tr></thead>
+      <tbody id="live-rows"></tbody>
+    </table>
+  </div>
+</section>
+
+<!-- 2. バックテスト -->
+<section>
+  <div class="sec-head"><h2>検証（バックテスト）</h2><span class="tag bt">過去データ・参考値</span></div>
+  <p class="sub">2026年3月〜7月上旬のレースで学習し、その後の期間で答えを見ずに予測させた結果です。<strong>過去データでの検証値であり、将来の成績を保証しません。</strong></p>
+
+  <div class="tiles" id="bt-tiles"></div>
+
+  <div class="card">
+    <h3>予測勝率が低いレースほど、1号艇は実際に負けている</h3>
+    <p class="cap">1号艇の予測勝率が低い順に検証レースを10等分し、各グループで実際に1号艇が1着を逃した割合。1グループ862レース。当てずっぽうならどのグループも全体平均に並びます。</p>
+    <div class="legend">
+      <span><i style="background:var(--s2)"></i>検出ゾーン（下位20%＝毎朝TOP5を出す対象）</span>
+      <span><i style="background:var(--s1)"></i>それ以外</span>
+      <span><i style="background:var(--muted);width:14px;height:2px;border-radius:0"></i>検証全体の平均</span>
+    </div>
+    <div class="plot"><svg id="c-dec"></svg><div class="tt" id="tt-dec"></div></div>
+  </div>
+
+  <div class="card">
+    <h3>日ごとのブレ</h3>
+    <p class="cap">検出ゾーンの負け率を1日ずつ並べたもの。1日あたり30レース前後しかないので、日によっては全体平均を下回ります。だから判断は30日の集計で見てください。</p>
+    <div class="legend">
+      <span><i style="background:var(--s1)"></i>検出ゾーンの1号艇 非1着率</span>
+      <span><i style="background:var(--s2)"></i>その日の全レース平均</span>
+    </div>
+    <div class="plot"><svg id="c-day"></svg><div class="tt" id="tt-day"></div></div>
+  </div>
+
+  <div class="note">
+    <strong>正直に書きます。</strong> この検出ゾーンで機械的に舟券を買っても、回収率は100%を超えません（上のタイル参照）。ボートレースは売上の約25%が控除される競技で、公開データだけでその壁を越えるのは簡単ではない。<strong>だから買い目は売っていません。</strong>売っているのは「1号艇がどのくらい信用できるか」という判断材料です。
+  </div>
+</section>
+
+<!-- 3. 場別 -->
+<section>
+  <div class="sec-head"><h2>場別の効き具合</h2><span class="tag bt">検証期間の集計</span></div>
+  <p class="sub">検出ゾーンでの負け率が高い場ほど、このモデルが効いています。逆に差が小さい場は、検出されても信用しすぎないでください。</p>
+  <div class="tblwrap">
+    <table>
+      <thead><tr>
+        <th>場</th><th>全R</th><th>1号艇 非1着率</th><th>検出R</th><th>検出ゾーン 非1着率</th><th>差</th>
+      </tr></thead>
+      <tbody id="jyo-rows"></tbody>
+    </table>
+  </div>
+</section>
+
+<!-- 4. 方法 -->
+<section>
+  <div class="sec-head"><h2>やっていること</h2></div>
+  <div class="cols">
+    <div>
+      <h4>使っているデータ</h4>
+      <ul>
+        <li>ボートレース公式が毎日無料配布している番組表と競走成績</li>
+        <li>選手の級別・全国勝率・当地勝率</li>
+        <li>モーター2連率・ボート2連率・枠番</li>
+        <li>同じレース内での相対的な力関係（平均との差、順位）</li>
+      </ul>
+    </div>
+    <div>
+      <h4>使っていないもの</h4>
+      <ul>
+        <li>オッズ・人気（買われ方に引っぱられるため）</li>
+        <li>展示タイム・スタート展示（検証中）</li>
+        <li>非公開情報・スクレイピングで取ったデータ</li>
+      </ul>
+    </div>
+    <div>
+      <h4>モデル</h4>
+      <ul>
+        <li>LightGBM で6艇それぞれの1着確率を推定し、レース内で合計1になるよう正規化</li>
+        <li>効いている特徴量の上位は、全国勝率の差・モーター2連率の差・当地勝率の差</li>
+        <li>毎朝、その日の全レースを採点し、1号艇の予測勝率が低い順の下位20%を「検出」とする</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p><strong>免責</strong>／本ページの情報は舟券の購入を推奨するものではありません。検証成績は過去データにもとづく参考値であり、将来の結果を保証しません。舟券は20歳以上・ご自身の判断と責任でご購入ください。</p>
+  <p>数字には必ず期間と母数をつけています。「必ず」「絶対」「爆益」とは書きません。負けた週の数字もそのまま出します。<br>X：@ichitobi_boat</p>
+</footer>
+
+</div>
+
+<script>
+const DATA = {"period":["2026-07-06","2026-08-29"],"races":8695,"overall_lose":0.4582366589327146,"n_r1":8620,"decile":[[0,862,0.7645011600928074,0.04422548660242461,0.34595139926919205],[1,862,0.6392111368909513,0.34596982591338826,0.4163465806422792],[2,862,0.6067285382830626,0.41635323859288415,0.4692575670599012],[3,862,0.537122969837587,0.4693130700017599,0.5190658800643574],[4,862,0.4582366589327146,0.5190794056210779,0.5622033747663315],[5,862,0.4431554524361949,0.5622638822495822,0.6021510930439339],[6,862,0.3329466357308585,0.6021816755516161,0.6354084716215425],[7,862,0.3190255220417633,0.635513050967704,0.6655110753838206],[8,862,0.25754060324825984,0.6655465042817034,0.6970328762575815],[9,862,0.22389791183294663,0.6970472349886001,0.8192977043942653]],"det_n":1748,"det_lose":0.7036613272311213,"jyo":[["びわこ",332,0.45180722891566266,57,0.5789473684210527],["三国",413,0.4745762711864407,98,0.7244897959183674],["下関",405,0.3728395061728395,67,0.582089552238806],["丸亀",392,0.4260204081632653,81,0.5925925925925926],["住之江",309,0.46601941747572817,67,0.6865671641791045],["児島",359,0.48467966573816157,66,0.696969696969697],["唐津",359,0.4735376044568245,73,0.7808219178082192],["多摩川",381,0.45931758530183725,102,0.6666666666666666],["大村",370,0.4486486486486487,69,0.7391304347826086],["宮島",335,0.44776119402985076,77,0.6753246753246753],["尼崎",429,0.4195804195804196,99,0.6464646464646465],["常滑",402,0.3781094527363184,89,0.7528089887640449],["平和島",412,0.5946601941747572,110,0.8181818181818182],["徳山",370,0.4189189189189189,47,0.6595744680851063],["戸田",332,0.608433734939759,72,0.7777777777777778],["桐生",380,0.4631578947368421,74,0.7567567567567568],["江戸川",285,0.5228070175438596,80,0.6875],["津",366,0.4781420765027322,83,0.7710843373493976],["浜名湖",333,0.4774774774774775,81,0.8271604938271605],["福岡",369,0.38482384823848237,63,0.6190476190476191],["芦屋",346,0.43641618497109824,39,0.6153846153846154],["若松",404,0.4430693069306931,49,0.6938775510204082],["蒲郡",238,0.44537815126050423,33,0.7575757575757576],["鳴門",299,0.45484949832775917,72,0.6527777777777778]],"l30":{"days":30,"n_r1":4743,"overall_lose":0.454775458570525,"det_n":960,"det_lose":0.6979166666666666},"pay":{"n":1748,"tan_hit":0.3329519450800915,"tan_roi":0.8561212814645309,"box_hit":0.21681922196796338,"box_roi":0.8198798627002288,"tan_in":174800,"tan_out":149650,"box_in":1048800,"box_out":859890,"l30":{"n":960,"tan_roi":0.8761458333333333,"box_roi":0.8271354166666667,"tan_hit":0.33645833333333336,"box_hit":0.21666666666666667}},"daily":[["2026-07-06",27,22,0.4275],["2026-07-07",29,24,0.5248],["2026-07-08",27,20,0.4773],["2026-07-09",29,20,0.4476],["2026-07-10",32,23,0.4744],["2026-07-11",36,25,0.4101],["2026-07-12",39,29,0.4503],["2026-07-13",32,20,0.4167],["2026-07-14",31,24,0.4065],["2026-07-15",34,24,0.509],["2026-07-16",29,20,0.4931],["2026-07-17",29,23,0.5141],["2026-07-18",36,25,0.4525],["2026-07-19",38,26,0.5079],["2026-07-20",31,22,0.4771],["2026-07-21",29,20,0.4336],["2026-07-22",29,20,0.5423],["2026-07-23",31,25,0.4706],["2026-07-24",36,24,0.486],["2026-07-25",36,22,0.452],["2026-07-26",31,22,0.4065],["2026-07-27",32,22,0.4359],["2026-07-28",29,22,0.4539],["2026-07-29",29,18,0.4366],["2026-07-30",27,18,0.4621],["2026-07-31",36,26,0.4382],["2026-08-01",31,17,0.3677],["2026-08-02",29,19,0.4056],["2026-08-03",29,24,0.4476],["2026-08-04",27,22,0.4198],["2026-08-05",27,17,0.374],["2026-08-06",24,19,0.55],["2026-08-07",29,22,0.5319],["2026-08-08",34,24,0.4311],["2026-08-09",34,22,0.4583],["2026-08-10",32,21,0.4679],["2026-08-11",34,25,0.5269],["2026-08-12",36,28,0.4804],["2026-08-13",36,26,0.5028],["2026-08-14",38,26,0.4474],["2026-08-15",43,32,0.4626],["2026-08-16",38,24,0.4278],["2026-08-17",34,23,0.4611],["2026-08-18",28,18,0.4786],["2026-08-19",29,20,0.4225],["2026-08-20",33,20,0.4061],["2026-08-21",29,19,0.4718],["2026-08-22",31,25,0.4516],["2026-08-23",34,28,0.5482],["2026-08-24",29,19,0.4167],["2026-08-25",31,22,0.4903],["2026-08-26",34,22,0.4819],["2026-08-27",31,22,0.4581],["2026-08-28",29,19,0.3819],["2026-08-29",31,19,0.4194]],"track":[{"date":"2026-08-30","det":34,"lose":29,"top5":5,"top5_hit":5,"tan_in":500,"tan_out":130,"box_in":3000,"box_out":5390},{"date":"2026-09-03","det":34,"lose":26,"top5":5,"top5_hit":4,"tan_in":500,"tan_out":180,"box_in":3000,"box_out":10640},{"date":"2026-09-08","det":27,"lose":22,"top5":5,"top5_hit":5,"tan_in":500,"tan_out":370,"box_in":3000,"box_out":0},{"date":"2026-09-09","det":28,"lose":23,"top5":5,"top5_hit":5,"tan_in":500,"tan_out":220,"box_in":3000,"box_out":4290},{"date":"2026-09-10","det":27,"lose":19,"top5":5,"top5_hit":4,"tan_in":500,"tan_out":440,"box_in":3000,"box_out":1320},{"date":"2026-09-13","det":36,"lose":26,"top5":5,"top5_hit":5,"tan_in":500,"tan_out":810,"box_in":3000,"box_out":1820},{"date":"2026-09-14","det":34,"lose":26,"top5":5,"top5_hit":5,"tan_in":500,"tan_out":590,"box_in":3000,"box_out":3150},{"date":"2026-09-15","det":32,"lose":17,"top5":5,"top5_hit":4,"tan_in":500,"tan_out":400,"box_in":3000,"box_out":0},{"date":"2026-09-16","det":32,"lose":20,"top5":5,"top5_hit":4,"tan_in":500,"tan_out":0,"box_in":3000,"box_out":0},{"date":"2026-09-17","det":36,"lose":24,"top5":5,"top5_hit":4,"tan_in":500,"tan_out":430,"box_in":3000,"box_out":0},{"date":"2026-09-18","det":36,"lose":27,"top5":5,"top5_hit":4,"tan_in":500,"tan_out":1660,"box_in":3000,"box_out":2090}]};
+
+const pc = (x, d=1) => (x*100).toFixed(d) + '%';
+const yen = n => n.toLocaleString('ja-JP');
+const md  = s => s.slice(5).replace('-','/');
+
+/* ---------- meta ---------- */
+const lastLive = DATA.track.length ? DATA.track[DATA.track.length-1].date : null;
+document.getElementById('updated').textContent = lastLive ? lastLive.replace(/-/g,'/') : '—';
+document.getElementById('m-live').textContent  = DATA.track.length + '日';
+document.getElementById('m-bt').textContent    = DATA.races.toLocaleString() + 'R';
+
+/* ---------- 実測 ---------- */
+const T = DATA.track;
+const sum = k => T.reduce((a,r)=>a+r[k],0);
+const dN = sum('det'), lN = sum('lose'), t5=sum('top5'), t5h=sum('top5_hit');
+const ti=sum('tan_in'), to=sum('tan_out'), bi=sum('box_in'), bo=sum('box_out');
+
+document.getElementById('live-warn').innerHTML =
+  '<strong>母数がまだ小さいです。</strong> 運用開始から' + T.length + '日、検出' + dN +
+  'レース。この規模では良くも悪くも偶然でぶれます。下の検証（8,695レース）と混ぜずに読んでください。実測が30日たまるまで、判断材料は検証のほうです。';
+
+const liveTiles = [
+  ['運用日数', T.length, '日', '2026/8/30 開始'],
+  ['検出レース', dN, 'R', '毎朝の下位20%'],
+  ['1号艇が負け', pc(lN/Math.max(dN,1),0), '', lN+'R／検出'+dN+'R', true],
+  ['朝のTOP5', t5h+'/'+t5, '', '公開した5本の的中'],
+  ['検証 単勝', pc(to/Math.max(ti,1),0), '', yen(ti)+'円 → '+yen(to)+'円'],
+  ['検証 BOX', pc(bo/Math.max(bi,1),0), '', yen(bi)+'円 → '+yen(bo)+'円'],
+];
+document.getElementById('live-tiles').innerHTML = liveTiles.map(t =>
+  '<div class="tile'+(t[4]?' hl':'')+'"><div class="k">'+t[0]+'</div>'+
+  '<div class="v num">'+t[1]+(t[2]?'<small>'+t[2]+'</small>':'')+'</div>'+
+  '<div class="f num">'+t[3]+'</div></div>').join('');
+
+document.getElementById('live-rows').innerHTML = T.map(r =>
+  '<tr><td class="num">'+md(r.date)+'</td><td class="num">'+r.det+'</td><td class="num">'+r.lose+'</td>'+
+  '<td class="num">'+pc(r.lose/r.det,0)+'</td><td class="num">'+r.top5_hit+'/'+r.top5+'</td>'+
+  '<td class="num dim">'+yen(r.tan_in)+' → '+yen(r.tan_out)+'</td>'+
+  '<td class="num dim">'+yen(r.box_in)+' → '+yen(r.box_out)+'</td></tr>').join('');
+
+/* ---------- バックテスト tiles ---------- */
+const P = DATA.pay;
+const btTiles = [
+  ['検証レース数', DATA.races.toLocaleString(), 'R', DATA.period[0].replace(/-/g,'/')+' 〜 '+DATA.period[1].slice(5).replace('-','/')],
+  ['全レース平均', pc(DATA.overall_lose), '', '1号艇が1着を逃した率'],
+  ['検出ゾーン', pc(DATA.det_lose), '', DATA.det_n.toLocaleString()+'R／平均+'+((DATA.det_lose-DATA.overall_lose)*100).toFixed(1)+'pt', true],
+  ['検証 単勝 回収率', pc(P.tan_roi), '', '的中'+pc(P.tan_hit,1)+'／'+DATA.det_n.toLocaleString()+'点'],
+  ['検証 3連単BOX 回収率', pc(P.box_roi), '', '的中'+pc(P.box_hit,1)+'／6点×'+DATA.det_n.toLocaleString()+'R'],
+  ['直近30日 検出ゾーン', pc(DATA.l30.det_lose), '', DATA.l30.det_n+'R／平均'+pc(DATA.l30.overall_lose)],
+];
+document.getElementById('bt-tiles').innerHTML = btTiles.map(t =>
+  '<div class="tile'+(t[4]?' hl':'')+'"><div class="k">'+t[0]+'</div>'+
+  '<div class="v num">'+t[1]+(t[2]?'<small>'+t[2]+'</small>':'')+'</div>'+
+  '<div class="f num">'+t[3]+'</div></div>').join('');
+
+/* ---------- tooltip helper ---------- */
+function bindTT(svg, tip){
+  return (el, html) => {
+    el.addEventListener('mousemove', e => {
+      const b = svg.parentElement.getBoundingClientRect();
+      tip.innerHTML = html; tip.style.opacity = 1;
+      tip.style.left = (e.clientX - b.left + svg.parentElement.scrollLeft) + 'px';
+      tip.style.top  = (e.clientY - b.top) + 'px';
+    });
+    el.addEventListener('mouseleave', () => tip.style.opacity = 0);
+  };
+}
+const SVGNS = 'http://www.w3.org/2000/svg';
+const mk = (t, a) => { const e = document.createElementNS(SVGNS,t); for(const k in a) e.setAttribute(k,a[k]); return e; };
+
+/* ---------- chart 1: decile ---------- */
+(function(){
+  const svg = document.getElementById('c-dec'), tip = document.getElementById('tt-dec');
+  const on = bindTT(svg, tip);
+  const D = DATA.decile, rowH = 30, padT = 46, padB = 30, L = 96, R = 46;
+  const W = 820, H = padT + D.length*rowH + padB;
+  svg.setAttribute('viewBox','0 0 '+W+' '+H); svg.setAttribute('width',W); svg.setAttribute('height',H);
+  const maxV = 0.85, x = v => L + v/maxV*(W-L-R);
+
+  [0,.2,.4,.6,.8].forEach(g=>{
+    svg.appendChild(mk('line',{x1:x(g),x2:x(g),y1:padT-8,y2:H-padB,stroke:'var(--grid)','stroke-width':1}));
+    const t = mk('text',{x:x(g),y:H-padB+18,'text-anchor':'middle',fill:'var(--muted)','font-size':11}); t.textContent = (g*100)+'%';
+    t.setAttribute('font-family','IBM Plex Mono, monospace'); svg.appendChild(t);
+  });
+
+  D.slice().reverse().forEach((d,i)=>{
+    const [idx,n,lose,pmin,pmax] = d;
+    const y = padT + i*rowH, det = idx <= 1;
+    const lab = mk('text',{x:L-12,y:y+rowH/2+4,'text-anchor':'end',fill:'var(--ink-2)','font-size':11.5,'font-family':'IBM Plex Mono, monospace'});
+    lab.textContent = Math.round(pmin*100)+'–'+Math.round(pmax*100)+'%';
+    svg.appendChild(lab);
+    const w = x(lose)-L;
+    const bar = mk('rect',{x:L,y:y+7,width:Math.max(w,2),height:rowH-16,rx:3,fill:det?'var(--s2)':'var(--s1)'});
+    svg.appendChild(bar);
+    const v = mk('text',{x:x(lose)+8,y:y+rowH/2+4,fill:det?'var(--s2)':'var(--ink-2)','font-size':11.5,'font-weight':det?600:400,'font-family':'IBM Plex Mono, monospace'});
+    v.textContent = (lose*100).toFixed(1)+'%'; svg.appendChild(v);
+    const hit = mk('rect',{x:L,y:y,width:W-L-R,height:rowH,fill:'transparent'});
+    svg.appendChild(hit);
+    on(hit, '<b>予測勝率 '+Math.round(pmin*100)+'–'+Math.round(pmax*100)+'%</b><br>1号艇が負けた率 '+(lose*100).toFixed(1)+'%<br>'+n+'レース'+(det?'<br>→ 検出ゾーン':''));
+  });
+
+  const av = DATA.overall_lose;
+  svg.appendChild(mk('line',{x1:x(av),x2:x(av),y1:padT-16,y2:H-padB,stroke:'var(--muted)','stroke-width':2,'stroke-dasharray':'4 3'}));
+  const at = mk('text',{x:x(av),y:padT-24,'text-anchor':'middle',fill:'var(--ink-2)','font-size':11,'font-family':'IBM Plex Mono, monospace'});
+  at.textContent = '全体平均 '+(av*100).toFixed(1)+'%'; svg.appendChild(at);
+  const yl = mk('text',{x:0,y:12,fill:'var(--muted)','font-size':10.5}); yl.textContent='1号艇の予測勝率'; svg.appendChild(yl);
+})();
+
+/* ---------- chart 2: daily ---------- */
+(function(){
+  const svg = document.getElementById('c-day'), tip = document.getElementById('tt-day');
+  const on = bindTT(svg, tip);
+  const D = DATA.daily.map(r => ({date:r[0], det:r[1], lose:r[2], rate:r[2]/r[1], base:r[3]}));
+  const W = 820, H = 260, L = 44, R = 16, Tp = 16, B = 34;
+  svg.setAttribute('viewBox','0 0 '+W+' '+H); svg.setAttribute('width',W); svg.setAttribute('height',H);
+  const x = i => L + i/(D.length-1)*(W-L-R);
+  const y = v => Tp + (1 - (v-0.2)/0.7)*(H-Tp-B);
+
+  [0.3,0.5,0.7,0.9].forEach(g=>{
+    svg.appendChild(mk('line',{x1:L,x2:W-R,y1:y(g),y2:y(g),stroke:'var(--grid)','stroke-width':1}));
+    const t = mk('text',{x:L-8,y:y(g)+4,'text-anchor':'end',fill:'var(--muted)','font-size':10.5,'font-family':'IBM Plex Mono, monospace'});
+    t.textContent=(g*100).toFixed(0)+'%'; svg.appendChild(t);
+  });
+  D.forEach((d,i)=>{ if(i%7===0){
+    const t = mk('text',{x:x(i),y:H-12,'text-anchor':'middle',fill:'var(--muted)','font-size':10.5,'font-family':'IBM Plex Mono, monospace'});
+    t.textContent = md(d.date); svg.appendChild(t);
+  }});
+
+  const path = (k,c) => {
+    const dstr = D.map((d,i)=>(i?'L':'M')+x(i).toFixed(1)+' '+y(d[k]).toFixed(1)).join(' ');
+    svg.appendChild(mk('path',{d:dstr,fill:'none',stroke:c,'stroke-width':2,'stroke-linejoin':'round','stroke-linecap':'round'}));
+  };
+  path('base','var(--s2)'); path('rate','var(--s1)');
+
+  const cross = mk('line',{x1:0,x2:0,y1:Tp,y2:H-B,stroke:'var(--rule)','stroke-width':1,opacity:0});
+  svg.appendChild(cross);
+  const d1 = mk('circle',{r:4.5,fill:'var(--s1)',stroke:'var(--surface)','stroke-width':2,opacity:0});
+  const d2 = mk('circle',{r:4.5,fill:'var(--s2)',stroke:'var(--surface)','stroke-width':2,opacity:0});
+  svg.appendChild(d2); svg.appendChild(d1);
+
+  const hit = mk('rect',{x:L,y:Tp,width:W-L-R,height:H-Tp-B,fill:'transparent'});
+  svg.appendChild(hit);
+  hit.addEventListener('mousemove', e => {
+    const b = svg.getBoundingClientRect();
+    const px = (e.clientX - b.left) / b.width * W;
+    const i = Math.max(0, Math.min(D.length-1, Math.round((px-L)/(W-L-R)*(D.length-1))));
+    const d = D[i];
+    cross.setAttribute('x1',x(i)); cross.setAttribute('x2',x(i)); cross.setAttribute('opacity',1);
+    d1.setAttribute('cx',x(i)); d1.setAttribute('cy',y(d.rate)); d1.setAttribute('opacity',1);
+    d2.setAttribute('cx',x(i)); d2.setAttribute('cy',y(d.base)); d2.setAttribute('opacity',1);
+    const pb = svg.parentElement.getBoundingClientRect();
+    tip.innerHTML = '<b>'+d.date.replace(/-/g,'/')+'</b><br>検出 '+(d.rate*100).toFixed(0)+'%（'+d.lose+'/'+d.det+'R）<br>全体 '+(d.base*100).toFixed(0)+'%';
+    tip.style.opacity=1;
+    tip.style.left = (e.clientX - pb.left + svg.parentElement.scrollLeft)+'px';
+    tip.style.top  = (e.clientY - pb.top)+'px';
+  });
+  hit.addEventListener('mouseleave', ()=>{ tip.style.opacity=0; cross.setAttribute('opacity',0); d1.setAttribute('opacity',0); d2.setAttribute('opacity',0); });
+})();
+
+/* ---------- 場別 ---------- */
+(function(){
+  const rows = DATA.jyo.map(r => ({name:r[0], n:r[1], lose:r[2], dn:r[3], dlose:r[4]}))
+    .filter(r => r.dlose != null).sort((a,b) => b.dlose - a.dlose);
+  const mx = Math.max(...rows.map(r=>r.dlose));
+  document.getElementById('jyo-rows').innerHTML = rows.map(r =>
+    '<tr><td>'+r.name+'</td><td class="num dim">'+r.n+'</td><td class="num dim">'+pc(r.lose,0)+'</td>'+
+    '<td class="num dim">'+r.dn+'</td>'+
+    '<td class="bar"><div class="brow"><span class="trk"><i style="width:'+(r.dlose/0.85*100).toFixed(1)+'%"></i></span>'+
+    '<b class="num">'+pc(r.dlose,0)+'</b></div></td>'+
+    '<td class="num" style="color:var(--s1)">+'+((r.dlose-r.lose)*100).toFixed(0)+'pt</td></tr>').join('');
+})();
+</script>
